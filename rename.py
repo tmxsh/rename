@@ -1,12 +1,19 @@
 import os
 
-s = os.listdir(os.getcwd())
-
 def rename(path):
+    #print(path)
     dir = os.listdir(path)
+    whack = ""
     for filename in dir:
-        if os.path.isdir(path + "\\" + filename):
-            rename(path + "\\" + filename)
+        if os.name == "nt":
+            test = path + "\\" + filename
+            whack = "\\"
+        else:
+            test = path + "/" + filename
+            whack = "/"
+            
+        if os.path.isdir(test):
+            rename(test)
         else:
             if filename.find(" ") != -1:
                 index = filename.find(" ")
@@ -15,7 +22,7 @@ def rename(path):
                     index = newName.find(" ")
                     newName = newName[:index] + "_" + newName[index+1:]
                 
-                os.rename(path + "\\" + filename, path + "\\" + newName)
+                os.rename(test, path + whack + newName)
 
         
 rename(os.getcwd())
